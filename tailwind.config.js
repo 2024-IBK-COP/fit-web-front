@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -11,5 +12,15 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require('tailwind-typewriter')({
+    wordsets: {
+      iword:{
+        words: ['i like','ibk', 'I love', 'i?','invoice', 'IBK', 'Let\'s invoice','industrial bank of korea', 'InU', 'InVoice', 'ibk and invoice', 'i&voice ' ],
+        delay: 0.8,
+        pauseBetween : 0.5,
+        writeSpeed : 0.1,
+        eraseSpeed : 0.05
+      }
+    }
+  })],
 }
