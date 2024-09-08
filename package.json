@@ -11,11 +11,13 @@
   "dependencies": {
     "axios": "^1.7.7",
     "next": "14.2.8",
+    "next-auth": "^4.24.7",
     "react": "^18",
     "react-dom": "^18",
     "tailwind-typewriter": "^1.0.1"
   },
   "devDependencies": {
+    "@types/next-auth": "^3.13.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

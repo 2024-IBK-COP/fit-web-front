@@ -4,6 +4,8 @@ import Image from "next/image";
 import React from 'react';
 import CustomInput from "./CustomInput";
 import CustomButton from "./CustomButton";
+import { signIn } from 'next-auth/react';
+
 // import axios from "axios";
 
 interface Props {
@@ -19,7 +21,7 @@ export default function Login(props : Props) {
         password : password
     }
 
-    const loginFunc = () => {
+    const loginFunc = async () => {
         
         alert(email + " & " + password);
         
@@ -35,10 +37,22 @@ export default function Login(props : Props) {
             props.setIsLogin(false);
         }
 
+        const result = await signIn('credentials', {
+            email,
+            password
+            // 필요한 경우 다른 필드도 추가할 수 있습니다.
+          });
+      
+          // 로그인이 성공하면 다음 페이지로 이동할 수 있습니다.
+          if (result!.error) {
+            // 로그인 실패 시 오류 메시지를 처리할 수 있습니다.
+            console.error(result!.error);
+          }
+
     }
 
     return (
-        <div className="dark:invert flex min-h-48 flex-col justify-center px-6 py-12 lg:px-8 bg-white">
+        <div className="dark:invert flex min-h-48 flex-col justify-center px-6 py-12 lg:px-8">
             <div className="dark:invert sm:mx-auto sm:w-full sm:max-w-sm">
                 <Image width={100} height={300} className="mx-auto h-50 w-auto" src="/img/IBK_CI_LOGO.png" alt="Your Company" />
                 <h2 className="type-iword dark:invert mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"></h2>

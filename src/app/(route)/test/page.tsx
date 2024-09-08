@@ -1,15 +1,32 @@
+"use client";
 
+import { useSession, signIn, signOut } from "next-auth/react";
+import { redirect } from 'next/navigation'
 
+const Login = () => {
+  // const { data: session } = useSession();
 
-const Custom404 = () => {
+  const { data: session } = useSession();
+  const test = useSession();
+  
+
+  if (session) {
     return (
-      
-      <div className="mt-10 mb-10 sm:mx-auto sm:w-full sm:max-w-sm space-y-5">
-        TEST
-      </div>
-      
+      <>
+        Signed in as {session.user!.email} <br />
+        <button onClick={() => signOut()}>Sign out</button>
+      </>
     );
+  } else {
+    redirect('/login');
+
+    return {
+      Redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
   }
-  
-  export default Custom404;
-  
+};
+
+export default Login;
