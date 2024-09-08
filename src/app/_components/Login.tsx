@@ -4,7 +4,7 @@ import Image from "next/image";
 import React from 'react';
 import CustomInput from "./CustomInput";
 import CustomButton from "./CustomButton";
-import axios from "axios";
+// import axios from "axios";
 
 interface Props {
     setIsLogin : (val : boolean) => void
