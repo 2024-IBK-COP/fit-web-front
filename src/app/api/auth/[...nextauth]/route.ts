@@ -16,7 +16,11 @@ const handler = NextAuth({
       },
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
-        const user = { id: '1', name: 'J Smith', email: 'jsmith@example.com' }
+        const user = { id: '1', name: 'TEST USER', email: 'testUSER@example.com' }
+
+        console.log("YAHO");
+        console.log(req);
+        console.log("YAHO");
 
         if (user) {
           // Any object returned will be saved in `user` property of the JWT
@@ -30,6 +34,21 @@ const handler = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      return { ...token, ...user };
+    },
+
+    async session({ session, token }) {
+      session.user = token as any;
+      return session;
+    },
+  },
+
+// 여기가 추가된 부분
+  // pages: {
+  //   signIn: "/login",
+  // },
 })
 
 export { handler as GET, handler as POST }
