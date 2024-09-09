@@ -1,8 +1,8 @@
 "use client";
 
-import Login from "./_components/Login";
+import Login from "../../_components/Login";
 import React from "react";
-import CustomButton from "./_components/CustomButton";
+import CustomButton from "../../_ßgit components/CustomButton";
 
 export default function Home() {
   const [isLogin, setIsLogin] = React.useState(false);
