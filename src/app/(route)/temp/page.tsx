@@ -2,7 +2,7 @@
 
 import Login from "../../_components/Login";
 import React from "react";
-import CustomButton from "../../_ßgit components/CustomButton";
+import CustomButton from "../../_components/CustomButton";
 
 export default function Home() {
   const [isLogin, setIsLogin] = React.useState(false);
