@@ -13,16 +13,28 @@ interface Props {
 }
 
 export default function Login(props: Props) {
+  const [isSend, setIsSend] = React.useState(false);
   const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [password, setPassword] = React.useState("1111");
+  const [code, setCode] = React.useState("123456");
+  const [time, setTime] = React.useState(300); // 남은 시간 (단위: 초)
 
   const data = {
     email: email,
     password: password,
   };
 
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+        setTime((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+}, []);
+
   const loginFunc = async () => {
     alert(email + " & " + password);
+
+    setIsSend(!isSend);
 
     console.log(data);
 
@@ -30,23 +42,23 @@ export default function Login(props: Props) {
     //     alert(res);
     // });
 
-    if (email == "test" && password == "test") {
-      props.setIsLogin(true);
-    } else {
-      props.setIsLogin(false);
-    }
+    // if (email == "test" && password == "test") {
+      // props.setIsLogin(true);
+    // } else {
+      // props.setIsLogin(false);
+    // }
 
-    const result = await signIn("credentials", {
-      email,
-      password,
+    // const result = await signIn("credentials", {
+      // email,
+      // password,
       // 필요한 경우 다른 필드도 추가할 수 있습니다.
-    });
+    // });
 
     // 로그인이 성공하면 다음 페이지로 이동할 수 있습니다.
-    if (result!.error) {
+    // if (result!.error) {
       // 로그인 실패 시 오류 메시지를 처리할 수 있습니다.
-      console.error(result!.error);
-    }
+      // console.error(result!.error);
+    // }
   };
 
   return (
@@ -64,35 +76,32 @@ export default function Login(props: Props) {
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <div className="space-y-6">
-          <CustomInput
-            nameVal="Email Address"
-            idVal="email"
-            typeVal="email"
-            setFunc={setEmail}
-          ></CustomInput>
+          {isSend ? (
+            <>
+            
 
-          <CustomInput
-            nameVal="Password"
-            idVal="password"
-            typeVal="password"
-            setFunc={setPassword}
-          ></CustomInput>
+            <p className="content-center dark:invert">We Sent 6 Digit Codes to your email. ({ time })</p>
+            <CustomInput
+              nameVal="6-Digit Code"
+              idVal="code"
+              typeVal="text"
+              labelVal="6 Digit Codes"
+              setFunc={setCode}
+            ></CustomInput>
+            </>
+          ) : (
+            <CustomInput
+              nameVal="Email Address"
+              idVal="email"
+              typeVal="email"
+              setFunc={setEmail}
+              labelVal="E-Mail Address"
+            ></CustomInput>
+          )}
 
-          <CustomButton func={loginFunc} nameVal="Login"></CustomButton>
+          <CustomButton func={loginFunc} nameVal="ENTER"></CustomButton>
         </div>
-
-        <p className="mt-10 text-center text-sm text-gray-500">
-          Not a member?
-          <a
-            href="#"
-            className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-          >
-            {" "}
-            Let's Start
-          </a>
-        </p>
       </div>
-      
     </div>
   );
 }

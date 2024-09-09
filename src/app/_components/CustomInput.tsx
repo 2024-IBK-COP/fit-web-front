@@ -2,6 +2,7 @@ interface Props {
   nameVal: string;
   idVal: string;
   typeVal: string;
+  labelVal?: string|"";
   setFunc: (value: string) => void;
 }
 
@@ -12,7 +13,7 @@ export default function CustomInput(props: Props) {
         htmlFor={props.idVal}
         className="block text-sm font-medium leading-6 text-gray-900"
       >
-        {props.nameVal}
+        {props.labelVal}
       </label>
       <div className="mt-2">
         <input

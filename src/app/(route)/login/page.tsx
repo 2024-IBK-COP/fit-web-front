@@ -3,6 +3,7 @@
 import Login from "../../_components/Login";
 import React from "react";
 import CustomButton from "../../_components/CustomButton";
+import CustomInput from "@/app/_components/CustomInput";
 
 export default function Home() {
   const [isLogin, setIsLogin] = React.useState(false);
@@ -32,46 +33,15 @@ export default function Home() {
       </div>
 
       {isLogin ? (
-        <div className="dark:invert flex flex-col space-y-10 mt-10">
-          <div className="dark:invert flex flex-col space-y-10 mt-10">
-            <div className="mx-32 flex flex-row gap-4 justify-center">
-              <div className="bg-gray-800 flex justify-center basis-1/3 hover:basis-1/2">1</div><div className="bg-gray-800 flex justify-center basis-1/3 hover:basis-1/2">date</div><div className="bg-gray-800 flex justify-center basis-1/3 hover:basis-1/2">name</div>
-            </div>
-          </div>
-          <div className="flex justify-center dark:invert">
-            <table className="table-fixed border-separate border-spacing-2 border border-slate-500">
-              <thead>
-                <tr>
-                  <th className="border border-slate-600">#</th>
-                  <th className="border border-slate-600">Date</th>
-                  <th className="border border-slate-600">Buyer</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="border border-slate-600">1</td>
-                  <td className="border border-slate-600">20220101</td>
-                  <td className="border border-slate-600">HONG</td>
-                </tr>
-                <tr>
-                  <td className="border border-slate-600">2</td>
-                  <td className="border border-slate-600">20220101</td>
-                  <td className="border border-slate-600">LEE</td>
-                </tr>
-                <tr>
-                  <td className="border border-slate-600">3</td>
-                  <td className="border border-slate-600">20220101</td>
-                  <td className="border border-slate-600">UH</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div className="flex justify-center dark:invert sm:mx-auto sm:w-full sm:max-w-sm">
-            <CustomButton
-              func={checkLoginStatus}
-              nameVal="create Invoice"
-            ></CustomButton>
-          </div>
+        <div className="dark:invert mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          
+          <CustomInput
+            nameVal="Secret Key"
+            idVal="email"
+            typeVal="email"
+            labelVal=""
+            setFunc={()=>{}}
+          ></CustomInput>
         </div>
       ) : (
         <div className="min-h-screen content-center">
