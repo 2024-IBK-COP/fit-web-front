@@ -1,7 +1,10 @@
-import NextAuth from 'next-auth/next'
+import NextAuth, Session from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 const handler = NextAuth({
+  pages: {
+    signIn: "/login" /* 직접 만든 페이지는 따로 지정 */,
+  },
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
@@ -11,12 +14,14 @@ const handler = NextAuth({
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        username: { label: 'Username', type: 'text', placeholder: 'jsmith' },
+        username: { label: 'Username', type: 'text', placeholder: 'wookyungLee' },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
-        const user = { id: '1', name: 'TEST USER', email: 'testUSER@example.com' }
+        const user = { id: '1', name: 'TEST USER', email: 'testUSER@example.com' };
+        
+        alert(credentials?.username + "&" + credentials?.password);
 
         console.log("YAHO");
         console.log(req);
@@ -39,8 +44,22 @@ const handler = NextAuth({
       return { ...token, ...user };
     },
 
-    async session({ session, token }) {
-      session.user = token as any;
+    async session({ session, token }: { session: Session; token: JWT }) {
+      if (token.error) {
+        // return Promise.reject({
+        //   error: token.error,
+        // });
+
+        session.error = token.error;
+        return session;
+      }
+
+      session.user.id = token.id;
+      session.user.name = token.name;
+      session.accessToken = token.accessToken;
+      session.accessTokenExpires = token.accessTokenExpires;
+      session.refreshToken = token.refreshToken;
+
       return session;
     },
   },

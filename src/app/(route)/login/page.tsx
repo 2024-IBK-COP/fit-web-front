@@ -16,32 +16,12 @@ export default function Home() {
   };
 
   return (
-    <>
-      <div className="fixed bottom-10 left-1/3 z-50 grid grid-cols-2 gap-4 place-content-center h-fit w-1/3">
-        <div className="flex place-content-center">
-          <CustomButton
-            func={checkLoginStatus}
-            nameVal="checkLoginStatus"
-          ></CustomButton>
-        </div>
-        <div className="flex place-content-center">
-          <CustomButton
-            func={changeLoginStatus}
-            nameVal="changeLoginStatus"
-          ></CustomButton>
-        </div>
-      </div>
-
+    <>      
+    {isLogin ? ("YAHO"):("NOYAHO")}
+    
       {isLogin ? (
         <div className="dark:invert mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          
-          <CustomInput
-            nameVal="Secret Key"
-            idVal="email"
-            typeVal="email"
-            labelVal=""
-            setFunc={()=>{}}
-          ></CustomInput>
+          YAHO
         </div>
       ) : (
         <div className="min-h-screen content-center">
