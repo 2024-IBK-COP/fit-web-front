@@ -1,9 +1,26 @@
-import NextAuth, Session from 'next-auth/next';
+import NextAuth, { NextAuthOptions, Session } from 'next-auth';
+import {JWT} from 'next-auth/jwt'
 import CredentialsProvider from 'next-auth/providers/credentials'
+
 
 const handler = NextAuth({
   pages: {
-    signIn: "/login" /* 직접 만든 페이지는 따로 지정 */,
+    signIn: "/login" /* 직접 만든 페이지는 따로 지정 */
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 5 * 60 * 60 * 1
+  },
+  events: {
+    async signOut(message) {
+      try {
+        // await api.post("/api/users/logout/", {
+        //   refresh: message.token.refreshToken,
+        // });
+      } catch (error) {
+        console.error("Sign out", error);
+      }
+    },
   },
   providers: [
     CredentialsProvider({
@@ -62,12 +79,9 @@ const handler = NextAuth({
 
       return session;
     },
-  },
+  }
 
-// 여기가 추가된 부분
-  // pages: {
-  //   signIn: "/login",
-  // },
+  
 })
 
 export { handler as GET, handler as POST }

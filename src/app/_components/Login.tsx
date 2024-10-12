@@ -112,11 +112,15 @@ export default function Login(props: Props) {
         callbackUrl: "/", // true 일경우 동작 에러일때 에러페이지 동작
       });
 
+      console.log("res");
+      console.log(res);
+      console.log("res");
+
       if(res?.error){
         alert("login Error");
       }
 
-      router.replace("/");
+      // router.replace("/");
       
     }else{
       // fail
