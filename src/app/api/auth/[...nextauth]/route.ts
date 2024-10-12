@@ -36,13 +36,25 @@ const handler = NextAuth({
       },
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
-        const user = { id: '1', name: 'TEST USER', email: 'testUSER@example.com' };
-        
-        alert(credentials?.username + "&" + credentials?.password);
+        console.log("YAHO??");
+        // const res = await fetch(`${process.env.NEXTAUTH_URL}/api/login`, {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({
+        //     username: credentials?.username,
+        //     password: credentials?.password,
+        //   }),
+        // });
+        console.log("YAHO???");
+        const resd =   await Promise.resolve().then(() => {return "YAHO"});
+        console.log("YAHO????");
+        const user = { id: '1', name: 'TEST USER', email: 'testUSER@example.com', accessToken: "abcd" };
 
-        console.log("YAHO");
+        console.log("reqreq");
         console.log(req);
-        console.log("YAHO");
+        console.log("reqreq");
 
         if (user) {
           // Any object returned will be saved in `user` property of the JWT
@@ -57,8 +69,58 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
-      return { ...token, ...user };
+
+    async jwt({ token, trigger, user, account, profile }) {
+      console.log("jwtjwtjwt");
+      console.log("token");
+      console.log(token);
+      console.log("token");
+      console.log("user");
+      console.log(user);
+      console.log("user");
+
+      return {
+        ...token,
+        ...user,
+      };
+
+      /* 최초 로그인시 동작 */
+      if (account && user) {
+        return {
+          ...token,
+          ...user,
+        };
+      }
+
+      const nowTime = Math.round(Date.now() / 1000);
+      const shouldRefreshTime = (token.accessTokenExpires as number) - nowTime;
+
+      /* 토큰이 만료되지 않았을때는 원래사용하던 토큰을 반환 */
+      if (shouldRefreshTime > 0) {
+        return token;
+      }
+
+      /* 토큰 만료 - 리프레시 요청 */
+      try {
+        // const res = await api.post("/api/users/refresh-token/", {
+        //   refresh: token.refreshToken,
+        // });
+
+        // return {
+        //   ...token,
+        //   accessToken: res.data.accessToken,
+        //   accessTokenExpires: res.data.accessTokenExpires,
+        // };
+      } catch (error) {
+        // return Promise.reject("RefreshAccessTokenError");
+        // throw new Error("RefreshAccessTokenError");
+
+        /* 리프레시 토큰 에러로 클라이언트에 에러 내용 전달 후 클라이언트에서 처리 */
+        return {
+          ...token,
+          error: "RefreshAccessTokenError",
+        };
+      }
     },
 
     async session({ session, token }: { session: Session; token: JWT }) {

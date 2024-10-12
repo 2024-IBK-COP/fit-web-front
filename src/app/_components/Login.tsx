@@ -102,9 +102,14 @@ export default function Login(props: Props) {
 
     if(code == inputCode){
       // success
-      alert("success");
+      console.log("success");
       props.setIsLogin(true);
       
+      // username: { label: 'Username', type: 'text', placeholder: 'wookyungLee' },
+      // password: { label: 'Password', type: 'password' },
+
+      console.log("START SIGN IN");
+
       const res = await signIn("credentials", {
         username: email,
         password: code,
