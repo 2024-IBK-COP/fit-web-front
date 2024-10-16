@@ -12,9 +12,9 @@ import { redirect } from "next/navigation";
 export default function Home() {
   const { data: session } = useSession();
 
-  console.log("HOME");
+  console.log("Login HOME S");
   console.log(session);
-  console.log("HOME");
+  console.log("Login HOME E");
 
   const [isLogin, setIsLogin] = React.useState(false);
 
@@ -26,7 +26,6 @@ export default function Home() {
   };
 
   if (session) {
-    redirect('/');
   } else {
     return(
     <div className="min-h-screen content-center">

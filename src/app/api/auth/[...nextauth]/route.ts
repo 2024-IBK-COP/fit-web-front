@@ -1,15 +1,14 @@
-import NextAuth, { NextAuthOptions, Session } from 'next-auth';
-import {JWT} from 'next-auth/jwt'
-import CredentialsProvider from 'next-auth/providers/credentials'
-
+import NextAuth, { NextAuthOptions, Session, User } from "next-auth";
+import { JWT } from "next-auth/jwt";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 const handler = NextAuth({
   pages: {
-    signIn: "/login" /* 직접 만든 페이지는 따로 지정 */
+    signIn: "/login" /* 직접 만든 페이지는 따로 지정 */,
   },
   session: {
     strategy: "jwt",
-    maxAge: 5 * 60 * 60 * 1
+    maxAge: 5 * 60 * 60 * 1,
   },
   events: {
     async signOut(message) {
@@ -25,18 +24,19 @@ const handler = NextAuth({
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
-      name: 'Credentials',
-      // `credentials` is used to generate a form on the sign in page.
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
+      name: "Credentials",
       credentials: {
-        username: { label: 'Username', type: 'text', placeholder: 'wookyungLee' },
-        password: { label: 'Password', type: 'password' },
+        username: {
+          label: "Username",
+          type: "text",
+          placeholder: "wookyungLee",
+        },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        // Add logic here to look up the user from the credentials supplied
-        console.log("YAHO??");
+        console.log("reqreq");
+        console.log(req);
+        console.log("reqreq");
         // const res = await fetch(`${process.env.NEXTAUTH_URL}/api/login`, {
         //   method: "POST",
         //   headers: {
@@ -47,38 +47,32 @@ const handler = NextAuth({
         //     password: credentials?.password,
         //   }),
         // });
-        console.log("YAHO???");
-        const resd =   await Promise.resolve().then(() => {return "YAHO"});
-        console.log("YAHO????");
-        const user = { id: '1', name: 'TEST USER', email: 'testUSER@example.com', accessToken: "abcd" };
 
-        console.log("reqreq");
-        console.log(req);
-        console.log("reqreq");
+        const responseSample = JSON.stringify({
+          accessToken: "accessTokenExample",
+          refreshToken: "refreshTokenExample",
+          accessTokenExpires: 100,
+        });
+        const res = await Promise.resolve().then(() => {
+          return responseSample;
+        });
+
+        const user: User = {
+          id: "1",
+          name: "TEST USER",
+          email: "testUSER@example.com",
+        };
 
         if (user) {
-          // Any object returned will be saved in `user` property of the JWT
-          return user
+          return user;
         } else {
-          // If you return null then an error will be displayed advising the user to check their details.
-          return null
-
-          // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
+          return null;
         }
       },
     }),
   ],
   callbacks: {
-
     async jwt({ token, trigger, user, account, profile }) {
-      console.log("jwtjwtjwt");
-      console.log("token");
-      console.log(token);
-      console.log("token");
-      console.log("user");
-      console.log(user);
-      console.log("user");
-
       return {
         ...token,
         ...user,
@@ -105,7 +99,6 @@ const handler = NextAuth({
         // const res = await api.post("/api/users/refresh-token/", {
         //   refresh: token.refreshToken,
         // });
-
         // return {
         //   ...token,
         //   accessToken: res.data.accessToken,
@@ -141,9 +134,29 @@ const handler = NextAuth({
 
       return session;
     },
-  }
 
-  
-})
+    async redirect({ url, baseUrl }) {
+      console.log("callback redirect called");
+      console.log("url : " + url);
+      console.log("baseURL : " + baseUrl);
 
-export { handler as GET, handler as POST }
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+      }
+
+      try {
+        const callbackUrl =
+          new URL(url).searchParams.get("callbackUrl") ?? baseUrl;
+        if (callbackUrl.startsWith("/")) {
+          return `${baseUrl}${callbackUrl}`;
+        } else {
+          return callbackUrl;
+        }
+      } catch (error) {
+        return baseUrl;
+      }
+    },
+  },
+});
+
+export { handler as GET, handler as POST };

@@ -113,8 +113,9 @@ export default function Login(props: Props) {
       const res = await signIn("credentials", {
         username: email,
         password: code,
-        redirect: false, // true 일경우 로그인 성공하면 에러를 보여줄 수 없다.
-        callbackUrl: "/", // true 일경우 동작 에러일때 에러페이지 동작
+        redirect: true, // true 일경우 로그인 성공하면 에러를 보여줄 수 없다.
+        // redirect: false, // true 일경우 로그인 성공하면 에러를 보여줄 수 없다.
+        // callbackUrl: "/", // true 일경우 동작 에러일때 에러페이지 동작
       });
 
       console.log("res");
