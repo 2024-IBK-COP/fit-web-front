@@ -63,7 +63,7 @@ export default function Login(props: Props) {
     alert(email + " & " + password);
 
     // var data = {"email":email, "password":password}
-    var data = JSON.stringify({ email, password });
+    const data = JSON.stringify({ email, password });
     console.log(data);
 
     axios.post("/api/v1/members", data).then((res) => {
@@ -110,9 +110,9 @@ export default function Login(props: Props) {
   const enterCode = async () => {
     alert(code + "&" + inputCode);
 
-    let authCode = inputCode
+    const authCode = inputCode
 
-    let data = {email, authCode}
+    const data = {email, authCode}
     
 
     axios.post("/api/v1/verify", data).then((res) => {
