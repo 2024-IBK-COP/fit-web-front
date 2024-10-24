@@ -137,6 +137,8 @@ export default function Login(props: Props) {
         console.log("res");
         console.log(res);
         console.log("res");
+      }else{
+        alert(res.data.message);  
       }
     })
     .catch(err =>{
