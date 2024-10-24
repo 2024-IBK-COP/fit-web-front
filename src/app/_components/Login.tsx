@@ -7,7 +7,7 @@ import CustomButton from "./CustomButton";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-// import axios from "axios";
+import axios from "axios";
 
 interface Props {
   setIsLogin: (val: boolean) => void;
@@ -16,67 +16,77 @@ interface Props {
 export default function Login(props: Props) {
   const [isSend, setIsSend] = React.useState(false);
   const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("1111");
+  const [password, setPassword] = React.useState("123456");
   const [code, setCode] = React.useState("123456");
   const [inputCode, setInputCode] = React.useState("");
-  const [time, setTime] = React.useState(10); // 남은 시간 (단위: 초)
+  const [time, setTime] = React.useState(300); // 남은 시간 (단위: 초)
   const intervalRef = React.useRef<NodeJS.Timeout | undefined>(undefined);
   const [isTimerStart, setIsTimerStart] = React.useState(false);
-  
+
   const router = useRouter();
 
-  React.useEffect(()=>{
-    if(time<=0){
+  React.useEffect(() => {
+    if (time <= 0) {
       timerReset();
     }
-  }, [time])
+  }, [time]);
 
   const timer = {
-    timerStart : isTimerStart,
-    time : time
-  }
+    timerStart: isTimerStart,
+    time: time,
+  };
 
   const data = {
     email: email,
     password: password,
-  };  
-
+  };
 
   const timerStart = () => {
     setIsTimerStart(true);
     intervalRef.current = setInterval(() => {
       setTime((prevTime) => prevTime - 1);
 
-      if(time <= 0){
+      if (time <= 0) {
         alert("RING DING DONG");
       }
-
     }, 1000);
-  }
+  };
 
   const timerReset = () => {
     setIsTimerStart(false);
     clearInterval(intervalRef.current);
     setTime(300);
     setIsSend(false);
-  }
+  };
 
   const sendCode = async () => {
     alert(email + " & " + password);
 
-    setIsSend(!isSend);
-    if(timer.timerStart){
-      timerReset()
-    }else{
-      timerStart();
-    }
-    
-
+    // var data = {"email":email, "password":password}
+    var data = JSON.stringify({ email, password });
     console.log(data);
 
-    // axios.post("endpoint",data).then((res)=>{
-    //     alert(res);
-    // });
+    axios.post("/api/v1/members", data).then((res) => {
+      
+      axios.post("/api/v1/login", data).then((res) => {
+        
+        console.log(res)
+
+        setCode(res.data.code);
+
+      });
+
+    });
+
+
+    setIsSend(!isSend);
+    if (timer.timerStart) {
+      timerReset();
+    } else {
+      timerStart();
+    }
+
+    console.log(data);
 
     // if (email == "test" && password == "test") {
     // props.setIsLogin(true);
@@ -98,44 +108,41 @@ export default function Login(props: Props) {
   };
 
   const enterCode = async () => {
-    alert(code + "&" + inputCode);  
+    alert(code + "&" + inputCode);
 
-    if(code == inputCode){
-      // success
-      console.log("success");
-      props.setIsLogin(true);
-      
-      // username: { label: 'Username', type: 'text', placeholder: 'wookyungLee' },
-      // password: { label: 'Password', type: 'password' },
+    let authCode = inputCode
 
-      console.log("START SIGN IN");
-
-      const res = await signIn("credentials", {
-        username: email,
-        password: code,
-        redirect: true, // true 일경우 로그인 성공하면 에러를 보여줄 수 없다.
-        // redirect: false, // true 일경우 로그인 성공하면 에러를 보여줄 수 없다.
-        // callbackUrl: "/", // true 일경우 동작 에러일때 에러페이지 동작
-      });
-
-      console.log("res");
-      console.log(res);
-      console.log("res");
-
-      if(res?.error){
-        alert("login Error");
-      }
-
-      // router.replace("/");
-      
-    }else{
-      // fail
-      alert("FAIL");
-    }
+    let data = {email, authCode}
     
+
+    axios.post("/api/v1/verify", data).then((res) => {
+      console.log(res);
+      if(res.data.code == "00"){
+        console.log("success");
+        props.setIsLogin(true);
+
+        // username: { label: 'Username', type: 'text', placeholder: 'wookyungLee' },
+        // password: { label: 'Password', type: 'password' },
+
+        console.log("START SIGN IN");
+
+        const res = signIn("credentials", {
+          username: email,
+          password: code,
+          redirect: true, // true 일경우 로그인 성공하면 에러를 보여줄 수 없다.
+          // redirect: false, // true 일경우 로그인 성공하면 에러를 보여줄 수 없다.
+          // callbackUrl: "/", // true 일경우 동작 에러일때 에러페이지 동작
+        });
+
+        console.log("res");
+        console.log(res);
+        console.log("res");
+      }
+    })
+    .catch(err =>{
+      alert("WRONG");
+    });
   };
-  
-  
 
   return (
     <div className="dark:invert flex min-h-48 flex-col justify-center px-6 py-12 lg:px-8">
@@ -151,7 +158,6 @@ export default function Login(props: Props) {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-
         <div className="space-y-6">
           {isSend ? (
             <>
