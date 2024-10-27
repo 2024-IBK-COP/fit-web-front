@@ -150,7 +150,7 @@ export default function Login(props: Props) {
     <div className="dark:invert flex min-h-48 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="dark:invert sm:mx-auto sm:w-full sm:max-w-sm">
         <Image
-          loader={()=>{return "/img/IBK_CI_LOGO.png"}}
+          // loader={()=>{return "/img/IBK_CI_LOGO.png"}}
           priority={true}
           width={100}
           height={300}
