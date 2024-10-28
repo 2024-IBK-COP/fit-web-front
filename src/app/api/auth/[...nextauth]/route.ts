@@ -26,11 +26,7 @@ const handler = NextAuth({
       // The name to display on the sign in form (e.g. "Sign in with...")
       name: "Credentials",
       credentials: {
-        username: {
-          label: "Username",
-          type: "text",
-          placeholder: "wookyungLee",
-        },
+        username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {

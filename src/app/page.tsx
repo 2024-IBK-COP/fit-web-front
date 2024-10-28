@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 import CustomButton from "./_components/CustomButton";
+import InvoiceTable from "./_components/InvoiceTable";
 
 const Home = () => {
   const { status, data: session } = useSession();
@@ -26,7 +27,7 @@ const Home = () => {
   if (session) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-between p-24">
-        yaho
+        <InvoiceTable></InvoiceTable>
         <CustomButton func={signOutFunc} nameVal="SIGN OUT"></CustomButton>
       </div>
     );
