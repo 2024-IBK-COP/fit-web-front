@@ -1,6 +1,8 @@
 import NextAuth, { NextAuthOptions, Session, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
+import axios from "axios";
+
 
 const handler = NextAuth({
   pages: {
@@ -26,38 +28,44 @@ const handler = NextAuth({
       // The name to display on the sign in form (e.g. "Sign in with...")
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text" },
-        password: { label: "Password", type: "password" },
+        email: { label: "email", type: "email" },
+        authCode: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
         console.log("reqreq");
         console.log(req);
         console.log("reqreq");
-        // const res = await fetch(`${process.env.NEXTAUTH_URL}/api/login`, {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify({
-        //     username: credentials?.username,
-        //     password: credentials?.password,
-        //   }),
+        console.log("credentialscredentials");
+        console.log(credentials);
+        console.log("credentialscredentials");
+        
+
+        const res = axios.post("/api/v1/verify", credentials).then((res) => {
+          console.log(res);
+          if(res.data.code == "00"){
+            console.log("success");
+            return res;
+          }else{
+          
+          }
+        })
+        .catch(err =>{
+          
+        });
+
+
+        // const responseSample = JSON.stringify({
+        //   accessToken: "accessTokenExample",
+        //   refreshToken: "refreshTokenExample",
+        //   accessTokenExpires: 100,
+        // });
+        // const res = await Promise.resolve().then(() => {
+        //   return responseSample;
         // });
 
-        const responseSample = JSON.stringify({
-          accessToken: "accessTokenExample",
-          refreshToken: "refreshTokenExample",
-          accessTokenExpires: 100,
-        });
-        const res = await Promise.resolve().then(() => {
-          return responseSample;
-        });
-
         const user: User = {
-          id: "1",
-          name: "TEST USER",
-          email: "testUSER@example.com",
-        };
+          id : credentials?.email ?? ""
+        }
 
         if (user) {
           return user;
