@@ -6,30 +6,33 @@ import CustomButton from "../../_components/CustomButton";
 import CustomInput from "@/app/_components/CustomInput";
 
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const { data: session } = useSession();
+  //const { data: session } = useSession();
+  const router = useRouter();
+  const { status, data: session } = useSession();
 
-  console.log("Login HOME S");
+  console.log("SESSION S");
   console.log(session);
-  console.log("Login HOME E");
+  console.log("SESSION E");
 
-  const [isLogin, setIsLogin] = React.useState(false);
-
-  const checkLoginStatus = () => {
-    alert(isLogin);
-  };
-  const changeLoginStatus = () => {
-    setIsLogin(!isLogin);
-  };
+  if (status === "loading") {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-between p-24">
+        loading
+      </div>
+    );
+  }
 
   if (session) {
+    console.log("SESSION ALIVE");
+    router.push("/");
   } else {
-    return(
-    <div className="min-h-screen content-center">
-      <Login setIsLogin={setIsLogin}></Login>
-    </div>);
+    return (
+      <div className="min-h-screen content-center">
+        <Login></Login>
+      </div>
+    );
   }
 }

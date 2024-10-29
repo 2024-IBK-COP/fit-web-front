@@ -40,17 +40,37 @@ const handler = NextAuth({
         console.log("credentialscredentials");
         
 
-        const res = axios.post("/api/v1/verify", credentials).then((res) => {
-          console.log(res);
-          if(res.data.code == "00"){
-            console.log("success");
-            return res;
-          }else{
+        console.log("YAHOYAHO");
+
+        // return await fetch("api/v1/verify", {method:"POST, body:JSON.stringfy(credentials)"})
+
+        return await axios
+        // .post("/api/v1/verify", credentials)
+        .post("http://34.105.111.197:8080/api/v1/verify", credentials)
+        .then((res) => {
           
+          if(res.data.code == "00"){
+
+            const user: User = {
+              id : credentials?.email ?? "",
+              email : credentials?.email,
+              accessToken : res.data?.data?.accessToken ?? "",
+              accessTokenExpire : res.data?.data?.accessTokenExpire ?? "",
+              refreshToken : res.data?.data?.refreshToken ?? ""
+            }
+            console.log("USER");
+            console.log(user);
+            console.log("USER");
+            return user;
+            
+          }else{
+            return null;
           }
         })
         .catch(err =>{
-          
+          console.log("ERRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+          console.log(err);
+          return null;
         });
 
 
@@ -63,15 +83,15 @@ const handler = NextAuth({
         //   return responseSample;
         // });
 
-        const user: User = {
-          id : credentials?.email ?? ""
-        }
+        // const user: User = {
+        //   id : credentials?.email ?? ""
+        // }
 
-        if (user) {
-          return user;
-        } else {
-          return null;
-        }
+        // if (user) {
+        //   return user;
+        // } else {
+        //   return null;
+        // }
       },
     }),
   ],

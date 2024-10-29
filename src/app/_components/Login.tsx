@@ -1,16 +1,19 @@
 "use client";
 
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 import React from "react";
 import CustomInput from "./CustomInput";
 import CustomButton from "./CustomButton";
-import { signIn } from "next-auth/react";
+import { signIn, SignInResponse } from "next-auth/react";
 import { useRouter } from "next/navigation";
+
+
 
 import axios from "axios";
 
 interface Props {
-  setIsLogin: (val: boolean) => void;
+  
 }
 
 export default function Login(props: Props) {
@@ -88,13 +91,19 @@ export default function Login(props: Props) {
     const authCode = inputCode
     const data = {email, authCode}
 
-    const res = signIn("credentials", {
-      username: email,
+    const res : SignInResponse | undefined = await signIn("credentials", {
+      email: email,
       authCode: inputCode,
-      redirect: true, // true 일경우 로그인 성공하면 에러를 보여줄 수 없다.
-      // redirect: false, // true 일경우 로그인 성공하면 에러를 보여줄 수 없다.
+      // redirect: true, // true 일경우 로그인 성공하면 에러를 보여줄 수 없다.
+      redirect: false, // true 일경우 로그인 성공하면 에러를 보여줄 수 없다.
       // callbackUrl: "/", // true 일경우 동작 에러일때 에러페이지 동작
     });
+
+    if (res?.ok){
+      router.push('/');
+    }else{
+      alert("PLZ CHECK CODE")
+    }
   };
 
   return (
