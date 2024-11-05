@@ -1,8 +1,7 @@
-import NextAuth, { NextAuthOptions, Session, User } from "next-auth";
+import NextAuth, { NextAuthOptions, Session, User, Account } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import axios from "axios";
-
 
 const handler = NextAuth({
   pages: {
@@ -38,41 +37,37 @@ const handler = NextAuth({
         console.log("credentialscredentials");
         console.log(credentials);
         console.log("credentialscredentials");
-        
 
         console.log("YAHOYAHO");
 
         // return await fetch("api/v1/verify", {method:"POST, body:JSON.stringfy(credentials)"})
 
         return await axios
-        // .post("/api/v1/verify", credentials)
-        .post("http://34.105.111.197:8080/api/v1/verify", credentials)
-        .then((res) => {
-          
-          if(res.data.code == "00"){
-
-            const user: User = {
-              id : credentials?.email ?? "",
-              email : credentials?.email,
-              accessToken : res.data?.data?.accessToken ?? "",
-              accessTokenExpire : res.data?.data?.accessTokenExpire ?? "",
-              refreshToken : res.data?.data?.refreshToken ?? ""
+          // .post("/api/v1/verify", credentials)
+          .post("http://34.105.111.197:8080/api/v1/verify", credentials)
+          .then((res) => {
+            if (res.data.code == "00") {
+              const user: User = {
+                id: credentials?.email ?? "",
+                name: credentials?.email ?? "",
+                email: credentials?.email,
+                accessToken: res.data?.data?.accessToken ?? "",
+                accessTokenExpire: res.data?.data?.accessTokenExpire ?? "",
+                refreshToken: res.data?.data?.refreshToken ?? "",
+              };
+              console.log("USER");
+              console.log(user);
+              console.log("USER");
+              return user;
+            } else {
+              return null;
             }
-            console.log("USER");
-            console.log(user);
-            console.log("USER");
-            return user;
-            
-          }else{
+          })
+          .catch((err) => {
+            console.log("ERRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+            console.log(err);
             return null;
-          }
-        })
-        .catch(err =>{
-          console.log("ERRRRRRRRRRRRRRRRRRRRRRRRRRRR");
-          console.log(err);
-          return null;
-        });
-
+          });
 
         // const responseSample = JSON.stringify({
         //   accessToken: "accessTokenExample",
@@ -96,7 +91,14 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, trigger, user, account, profile }) {
+    async jwt({token, user, account}) {
+      console.log("JWT CALLED");
+      console.log(token);
+      console.log(user);
+      console.log(account);
+      console.log("JWT CALLED");
+
+
       return {
         ...token,
         ...user,
@@ -141,6 +143,11 @@ const handler = NextAuth({
     },
 
     async session({ session, token }: { session: Session; token: JWT }) {
+      console.log("SESSION CALLED");
+      console.log(session);
+      console.log(token);
+      console.log("SESSION CALLED");
+
       if (token.error) {
         // return Promise.reject({
         //   error: token.error,
