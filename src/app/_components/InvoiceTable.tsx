@@ -1,4 +1,55 @@
-interface Props {}
+/*
+    "invoices": [
+      {
+        "id": "string",
+        "invoiceDate": "2024-11-05",
+        "dueDate": "2024-11-05",
+        "memberId": 0,
+        "memberEmail": "string",
+        "senderName": "string",
+        "senderAddress": "string",
+        "senderContact": "string",
+        "recipientName": "string",
+        "recipientAddress": "string",
+        "recipientContact": "string",
+        "items": [
+          {
+            "id": 0,
+            "itemName": "string",
+            "itemDescription": "string",
+            "quantity": 0,
+            "unitPrice": 0,
+            "totalPrice": 0,
+            "invoiceId": "string"
+          }
+        ],
+        "subTotal": 0,
+        "taxRate": 0,
+        "taxAmount": 0,
+        "discount": 0,
+        "totalAmount": 0,
+        "paymentTerms": "string",
+        "paymentMethod": "string",
+        "bankDetails": "string",
+        "paymentStatus": "string",
+        "notes": "string",
+        "termsAndConditions": "string",
+        "currency": "string",
+        "referenceNumber": "string"
+      }
+ */
+
+interface Props {
+  invoices: 
+    {
+      invoiceDate: string;
+      senderName: string;
+      recipientName: string;
+      currency: string;
+      totalAmount: number;
+    }[]
+  ;
+}
 
 export default function InvoiceTable(props: Props) {
   return (
@@ -16,7 +67,7 @@ export default function InvoiceTable(props: Props) {
               Buyer
             </th>
             <th scope="col" className="px-6 py-3">
-              Product
+              Currency
             </th>
             <th scope="col" className="px-6 py-3">
               Price
@@ -27,66 +78,31 @@ export default function InvoiceTable(props: Props) {
           </tr>
         </thead>
         <tbody>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <td className="px-6 py-4">2024-10-05</td>
-            <th
-              scope="row"
-              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              A Company
-            </th>
-            <td className="px-6 py-4">B Company</td>
-            <td className="px-6 py-4">Laptop</td>
-            <td className="px-6 py-4">$2999</td>
-            <td className="px-6 py-4 text-right">
-              <a
-                href="#"
-                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-              >
-                Edit
-              </a>
-            </td>
-          </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <td className="px-6 py-4">2024-10-05</td>
-            <th
-              scope="row"
-              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              A Company
-            </th>
-            <td className="px-6 py-4">B Company</td>
-            <td className="px-6 py-4">PC</td>
-            <td className="px-6 py-4">$1999</td>
-            <td className="px-6 py-4 text-right">
-              <a
-                href="#"
-                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-              >
-                Edit
-              </a>
-            </td>
-          </tr>
-          <tr className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-            <td className="px-6 py-4">2024-10-05</td>
-            <th
-              scope="row"
-              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              B Company
-            </th>
-            <td className="px-6 py-4">A Company</td>
-            <td className="px-6 py-4">GAME CD</td>
-            <td className="px-6 py-4">$99</td>
-            <td className="px-6 py-4 text-right">
-              <a
-                href="#"
-                className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-              >
-                Edit
-              </a>
-            </td>
-          </tr>
+          {props.invoices ? (
+            props.invoices.map((invoice) => (
+              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <td className="px-6 py-4">{invoice.invoiceDate}</td>
+                <td className="px-6 py-4">{invoice.senderName}</td>
+                <td className="px-6 py-4">{invoice.recipientName}</td>
+                <td className="px-6 py-4">{invoice.currency}</td>
+                <td className="px-6 py-4">{invoice.totalAmount}</td>
+                <td className="px-6 py-4 text-right">
+                  <a
+                    href="#"
+                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                  >
+                    SHOW INVOICE
+                  </a>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <td colSpan={6} className="px-6 py-4 text-center">
+                No Data
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
