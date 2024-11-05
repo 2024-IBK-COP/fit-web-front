@@ -8,13 +8,9 @@ import CustomButton from "./CustomButton";
 import { signIn, SignInResponse } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-
-
 import axios from "axios";
 
-interface Props {
-  
-}
+interface Props {}
 
 export default function Login(props: Props) {
   const [isSend, setIsSend] = React.useState(false);
@@ -63,35 +59,35 @@ export default function Login(props: Props) {
   };
 
   const sendCode = async () => {
-    alert(email + " & " + password);
+    if (email.length != 0 && email.includes('@')) {
+      // var data = {"email":email, "password":password}
+      const data = JSON.stringify({ email, password });
+      console.log(data);
 
-    // var data = {"email":email, "password":password}
-    const data = JSON.stringify({ email, password });
-    console.log(data);
-
-    axios.post("/api/v1/members", data).then((res) => {
-      axios.post("/api/v1/login", data).then((res) => {
-        console.log(res)
+      axios.post("/api/v1/members", data).then((res) => {
+        axios.post("/api/v1/login", data).then((res) => {
+          console.log(res);
+        });
       });
 
-    });
+      setIsSend(!isSend);
+      if (timer.timerStart) {
+        timerReset();
+      } else {
+        timerStart();
+      }
 
-    setIsSend(!isSend);
-    if (timer.timerStart) {
-      timerReset();
+      console.log(data);
     } else {
-      timerStart();
+      alert("Plz Check Email.");
     }
-
-    console.log(data);
-
   };
 
   const enterCode = async () => {
-    const authCode = inputCode
-    const data = {email, authCode}
+    const authCode = inputCode;
+    const data = { email, authCode };
 
-    const res : SignInResponse | undefined = await signIn("credentials", {
+    const res: SignInResponse | undefined = await signIn("credentials", {
       email: email,
       authCode: inputCode,
       // redirect: true, // true 일경우 로그인 성공하면 에러를 보여줄 수 없다.
@@ -99,10 +95,10 @@ export default function Login(props: Props) {
       // callbackUrl: "/", // true 일경우 동작 에러일때 에러페이지 동작
     });
 
-    if (res?.ok){
-      router.push('/');
-    }else{
-      alert("PLZ CHECK CODE")
+    if (res?.ok) {
+      router.push("/");
+    } else {
+      alert("PLZ CHECK CODE");
     }
   };
 
