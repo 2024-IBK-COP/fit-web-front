@@ -25,7 +25,7 @@ const Home = () => {
   const [showInvoices, setShowInvoices] = React.useState([]);
 
   React.useEffect(() => {
-    // searchData 가 바뀔때마다 실행
+    // session 찾을때마다 실행
     // console.log("IS MOUNTIS MOUNTIS MOUNTIS MOUNTIS MOUNTIS MOUNTIS MOUNTIS MOUNTIS MOUNTIS MOUNT");
     axios
       // .post("/api/v1/verify", credentials)
@@ -55,44 +55,12 @@ const Home = () => {
     setShowInvoices(
       invoices.filter((invoice: Invoice) => {
         return (
-          invoice.recipientName.includes(searchData) ||
-          invoice.senderName.includes(searchData)
+          invoice.recipientName.toUpperCase().includes(searchData.toUpperCase()) ||
+          invoice.senderName.toUpperCase().includes(searchData.toUpperCase())
         );
       })
     );
   }, [searchData]);
-
-  // React.useEffect(() => {
-  // 렌더링
-  // console.log(
-  //   "IS MOUNTIS MOUNTIS MOUNTIS MOUNTIS MOUNTIS MOUNTIS MOUNTIS MOUNTIS MOUNTIS MOUNT"
-  // );
-  // console.log(session);
-  // console.log(
-  //   "IS MOUNTIS MOUNTIS MOUNTIS MOUNTIS MOUNTIS MOUNTIS MOUNTIS MOUNTIS MOUNTIS MOUNT"
-  // );
-  // axios
-  //   // .post("/api/v1/verify", credentials)
-  //   .get("/api/v1/invoices/my", {
-  //     headers: {
-  //       Authorization: `Bearer ${session?.accessToken}`,
-  //     },
-  //   })
-  //   .then((res) => {
-  //     console.log("res.Data Invoice S");
-  //     console.log(res);
-  //     console.log("res.Data Invoice E");
-  //     if (res.data.code == "00") {
-  //       setInvoices(res.data.data.invoices);
-  //     } else {
-  //     }
-  //   })
-  //   .catch((err) => {
-  //     console.log("ERRRRRRRRRRRRRRRRRRRRRRRRRRRR");
-  //     console.log(err);
-  //     return null;
-  //   });
-  // }, []);
 
   const signOutFunc = async () => {
     const res = await signOut({ callbackUrl: "/" });
