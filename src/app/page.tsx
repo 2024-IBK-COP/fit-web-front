@@ -34,10 +34,7 @@ const Home = () => {
           Authorization: `Bearer ${session?.accessToken}`,
         },
       })
-      .then((res) => {
-        console.log("res.Data Invoice S");
-        console.log(res);
-        console.log("res.Data Invoice E");
+      .then((res) => {        
         if (res.data.code == "00") {
           setInvoices(res.data.data.invoices);
           setShowInvoices(res.data.data.invoices);

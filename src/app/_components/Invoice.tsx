@@ -79,7 +79,7 @@ export default function Invoice(props: Props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {props.invoice.items.map((item, index) => (
+                     {props.invoice.items.map((item, index) => (
                         <tr key={index}>
                             <td className="border border-gray-300 p-2">{item.itemName}</td>
                             <td className="border border-gray-300 p-2">{item.itemDescription}</td>

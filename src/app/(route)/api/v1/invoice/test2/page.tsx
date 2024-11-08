@@ -36,10 +36,10 @@ const InvoiceView = () => {
                 // return err.data;
             });
 
-    }, [status]);
+    }, []);
 
 
-    if (status === "loading" || invoiceData?.code != '00' ) {
+    if (status == "loading") {
         return (
             <div className="flex min-h-screen flex-col items-center justify-between p-24">
                 loading
@@ -48,11 +48,13 @@ const InvoiceView = () => {
     }
     
     if( session ) {
-        return (
-            // <Invoice invoice={invoiceSample}></Invoice>
-            // "1203f1e3-80b3-415a-a8af-db08b2f8196f"
-            <Invoice invoice={invoiceData}></Invoice>
-        );
+        if(invoiceData){
+            return (
+                // <Invoice invoice={invoiceSample}></Invoice>
+                // "1203f1e3-80b3-415a-a8af-db08b2f8196f"
+                <Invoice invoice={invoiceData}></Invoice>
+            );
+        }
     }
     
 };
