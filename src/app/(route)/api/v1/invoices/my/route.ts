@@ -36,4 +36,5 @@ export const GET = async (request: NextRequest) => {
     });
 
   return response;
+
 };
