@@ -1,6 +1,6 @@
 "use client";
 
-import Invoice from "../../../../../_components/Invoice";
+import Invoice from "@/app/_components/Invoice";
 import { useSearchParams } from 'next/navigation';
 import React from "react";
 import axios from "axios";

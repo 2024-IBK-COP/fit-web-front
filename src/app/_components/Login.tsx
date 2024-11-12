@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import React from "react";
 import CustomInput from "./CustomInput";
 import CustomButton from "./CustomButton";
+import MainLogo from "./MainLogo";
 import { signIn, SignInResponse } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -104,19 +105,9 @@ export default function Login(props: Props) {
 
   return (
     <div className="dark:invert flex min-h-48 flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="dark:invert sm:mx-auto sm:w-full sm:max-w-sm">
-        <Image
-          // loader={()=>{return "/img/IBK_CI_LOGO.png"}}
-          priority={true}
-          width={100}
-          height={300}
-          className="mx-auto h-50 w-auto"
-          src="/img/IBK_CI_LOGO.png"
-          alt="Your Company"
-        />
-        <h2 className="type-iword dark:invert mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"></h2>
+      <div className="dark:invert">
+        <MainLogo></MainLogo>
       </div>
-
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <div className="space-y-6">
           {isSend ? (

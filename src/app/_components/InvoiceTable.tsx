@@ -20,7 +20,7 @@
             "quantity": 0,
             "unitPrice": 0,
             "totalPrice": 0,
-            "invoiceId": "string"
+            "id": "string"
           }
         ],
         "subTotal": 0,
@@ -42,7 +42,7 @@
 interface Props {
   invoices: 
     {
-      invoiceId: string;
+      id: string;
       invoiceDate: string;
       senderName: string;
       recipientName: string;
@@ -81,18 +81,19 @@ export default function InvoiceTable(props: Props) {
         <tbody>
           {props.invoices.length > 0 ? (
             props.invoices.map((invoice) => (
-              <tr key={invoice.invoiceId} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <td key={invoice.invoiceId} className="px-6 py-4">{invoice.invoiceDate}</td>
-                <td key={invoice.invoiceId} className="px-6 py-4">{invoice.senderName}</td>
-                <td key={invoice.invoiceId} className="px-6 py-4">{invoice.recipientName}</td>
-                <td key={invoice.invoiceId} className="px-6 py-4">{invoice.currency}</td>
-                <td key={invoice.invoiceId} className="px-6 py-4">{invoice.totalAmount}</td>
-                <td key={invoice.invoiceId} className="px-6 py-4 text-right">
+              <tr key={invoice.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <td  className="px-6 py-4">{invoice.invoiceDate}</td>
+                <td  className="px-6 py-4">{invoice.senderName}</td>
+                <td  className="px-6 py-4">{invoice.recipientName}</td>
+                <td  className="px-6 py-4">{invoice.currency} {invoice.id}</td>
+                <td  className="px-6 py-4">{invoice.totalAmount}</td>
+                <td  className="px-6 py-4 text-right">
                   <a
                     href="#"
                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                   >
                     SHOW INVOICE
+                    {invoice.id}
                   </a>
                 </td>
               </tr>

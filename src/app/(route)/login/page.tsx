@@ -4,6 +4,7 @@ import Login from "../../_components/Login";
 import React from "react";
 import CustomButton from "../../_components/CustomButton";
 import CustomInput from "@/app/_components/CustomInput";
+import Loading from "@/app/_components/Loading";
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -19,9 +20,7 @@ export default function Home() {
 
   if (status === "loading") {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-between p-24">
-        loading
-      </div>
+      <Loading></Loading>
     );
   }
 

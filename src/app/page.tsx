@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import CustomButton from "./_components/CustomButton";
 import InvoiceTable from "./_components/InvoiceTable";
 import CustomInput from "./_components/CustomInput";
+import Loading from "./_components/Loading";
 import axios from "axios";
 
 interface Invoice {
@@ -38,6 +39,9 @@ const Home = () => {
         if (res.data.code == "00") {
           setInvoices(res.data.data.invoices);
           setShowInvoices(res.data.data.invoices);
+          console.log("console.log(res.data.data.invoices); S");
+          console.log(res.data.data.invoices);
+          console.log("console.log(res.data.data.invoices); E");
         } else {
         }
       })
@@ -65,9 +69,7 @@ const Home = () => {
 
   if (status === "loading") {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-between p-24">
-        loading
-      </div>
+      <Loading></Loading>
     );
   }
 
