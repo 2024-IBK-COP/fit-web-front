@@ -1,61 +1,116 @@
-"use client";
+import React from 'react';
+import { Page, Text, View, Document, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
 
-import Invoice from "../../../../../_components/Invoice";
-import { useSearchParams } from 'next/navigation';
-import React from "react";
-import axios from "axios";
-import { useSession } from "next-auth/react";
+// 예시 스타일
+const styles = StyleSheet.create({
+  page: {
+    padding: 30,
+  },
+  section: {
+    marginBottom: 10,
+    padding: 10,
+  },
+  header: {
+    fontSize: 20,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  details: {
+    fontSize: 12,
+    marginBottom: 10,
+  },
+  table: {
+    display: 'table',
+    width: 'auto',
+    borderStyle: 'solid',
+    borderColor: '#000',
+    borderWidth: 1,
+    marginTop: 20,
+  },
+  tableRow: {
+    flexDirection: 'row',
+  },
+  tableCol: {
+    borderStyle: 'solid',
+    borderColor: '#000',
+    borderWidth: 1,
+    padding: 5,
+    width: '25%',
+  },
+  tableCell: {
+    fontSize: 10,
+  },
+});
 
-const InvoiceView = () => {
-
-    const { status, data: session } = useSession();
-
-    const [invoiceData, setInvoiceData] = React.useState();
-    const invoiceId = useSearchParams().get('invoiceId');
-
-    React.useEffect(() => {
-
-        axios
-            .get(`/api/v1/invoice?invoiceId=${invoiceId}`, {
-                headers: {
-                    Authorization: `Bearer ${session?.accessToken}`,
-                  },
-                validateStatus: function (status) {
-                    return status < 500; // 상태 코드가 500 미만인 경우에만 해결
-                },
-            })
-            .then((res) => {
-                // return res.data;
-                console.log("console.log(res);console.log(res);")
-                console.log(res);
-                console.log("console.log(res);console.log(res);")
-                setInvoiceData(res.data.data)
-            })
-            .catch((err) => {
-                setInvoiceData(err.data)
-                // return err.data;
-            });
-
-    }, [status]);
-
-
-    if (status === "loading" || invoiceData?.code != '00' ) {
-        return (
-            <div className="flex min-h-screen flex-col items-center justify-between p-24">
-                loading
-            </div>
-        );
-    }
-    
-    if( session ) {
-        return (
-            // <Invoice invoice={invoiceSample}></Invoice>
-            // "1203f1e3-80b3-415a-a8af-db08b2f8196f"
-            <Invoice invoice={invoiceData}></Invoice>
-        );
-    }
-    
+// 인보이스 데이터 예시
+const invoiceData = {
+  invoiceNumber: '123456',
+  date: '2023-11-01',
+  dueDate: '2023-12-01',
+  client: {
+    name: 'John Doe',
+    address: '123 Main St, City, Country',
+  },
+  items: [
+    { description: 'Service 1', quantity: 2, price: 50 },
+    { description: 'Service 2', quantity: 3, price: 75 },
+  ],
 };
 
-export default InvoiceView;
+// 총 가격 계산 함수
+const calculateTotal = (items) =>
+  items.reduce((total, item) => total + item.quantity * item.price, 0);
 
+// 인보이스 문서 컴포넌트
+const InvoiceDocument = () => (
+  <Document>
+    <Page style={styles.page}>
+      <Text style={styles.header}>Invoice #{invoiceData.invoiceNumber}</Text>
+      
+      <View style={styles.section}>
+        <Text style={styles.details}>Date: {invoiceData.date}</Text>
+        <Text style={styles.details}>Due Date: {invoiceData.dueDate}</Text>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.details}>Bill To:</Text>
+        <Text style={styles.details}>{invoiceData.client.name}</Text>
+        <Text style={styles.details}>{invoiceData.client.address}</Text>
+      </View>
+
+      <View style={styles.table}>
+        <View style={styles.tableRow}>
+          <View style={styles.tableCol}><Text style={styles.tableCell}>Description</Text></View>
+          <View style={styles.tableCol}><Text style={styles.tableCell}>Quantity</Text></View>
+          <View style={styles.tableCol}><Text style={styles.tableCell}>Price</Text></View>
+          <View style={styles.tableCol}><Text style={styles.tableCell}>Total</Text></View>
+        </View>
+        
+        {invoiceData.items.map((item, index) => (
+          <View style={styles.tableRow} key={index}>
+            <View style={styles.tableCol}><Text style={styles.tableCell}>{item.description}</Text></View>
+            <View style={styles.tableCol}><Text style={styles.tableCell}>{item.quantity}</Text></View>
+            <View style={styles.tableCol}><Text style={styles.tableCell}>${item.price.toFixed(2)}</Text></View>
+            <View style={styles.tableCol}><Text style={styles.tableCell}>${(item.quantity * item.price).toFixed(2)}</Text></View>
+          </View>
+        ))}
+
+        <View style={styles.tableRow}>
+          <View style={styles.tableCol}><Text style={styles.tableCell}>Total</Text></View>
+          <View style={styles.tableCol}></View>
+          <View style={styles.tableCol}></View>
+          <View style={styles.tableCol}><Text style={styles.tableCell}>${calculateTotal(invoiceData.items).toFixed(2)}</Text></View>
+        </View>
+      </View>
+    </Page>
+  </Document>
+);
+
+// PDF 다운로드 링크 컴포넌트
+const InvoicePDF = () => (
+  <PDFDownloadLink document={<InvoiceDocument />} fileName="invoice.pdf">
+    {({ loading }) => (loading ? 'Loading document...' : 'Download Invoice')}
+  </PDFDownloadLink>
+);
+
+export default InvoicePDF;

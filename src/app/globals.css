@@ -13,6 +13,11 @@
     --foreground: #ededed;
   }
 }
+@layer base {
+  img {
+    @apply inline-block;
+  }
+}
 
 body {
   color: var(--foreground);
