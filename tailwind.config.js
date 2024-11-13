@@ -15,7 +15,7 @@ module.exports = {
   plugins: [require('tailwind-typewriter')({
     wordsets: {
       iword:{
-        words: ['i like','ibk', 'I love', 'i?','invoice', 'IBK', 'Let\'s invoice','industrial bank of korea', 'InU', 'InVoice', 'ibk and invoice', 'i&voice ' ],
+        words: ['IBK CCME', 'i like','ibk', 'CCME','I love', 'i?','invoice', 'IBK', 'Let\'s invoice','industrial bank of korea', 'InU', 'InVoice', 'ibk and invoice', 'i&voice ' ],
         delay: 0.8,
         pauseBetween : 0.5,
         writeSpeed : 0.1,

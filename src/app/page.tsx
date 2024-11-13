@@ -2,12 +2,12 @@
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import React from "react";
-import { redirect } from "next/navigation";
 import CustomButton from "./_components/CustomButton";
 import InvoiceTable from "./_components/InvoiceTable";
 import CustomInput from "./_components/CustomInput";
 import Loading from "./_components/Loading";
 import axios from "axios";
+import InvoiceView from "./_components/invoiceView";
 
 interface Invoice {
   invoiceId: string;
@@ -23,7 +23,9 @@ const Home = () => {
 
   const [searchData, setSearchData] = React.useState("");
   const [invoices, setInvoices] = React.useState([]);
-  const [showInvoices, setShowInvoices] = React.useState([]);
+  const [showInvoiceList, setShowInvoiceList] = React.useState([]);
+  const [showInvoice, setShowInvoice] = React.useState(false);
+  const [invoiceId, setInvoiceId] = React.useState("");
 
   React.useEffect(() => {
     // session 찾을때마다 실행
@@ -38,7 +40,7 @@ const Home = () => {
       .then((res) => {        
         if (res.data.code == "00") {
           setInvoices(res.data.data.invoices);
-          setShowInvoices(res.data.data.invoices);
+          setShowInvoiceList(res.data.data.invoices);
           console.log("console.log(res.data.data.invoices); S");
           console.log(res.data.data.invoices);
           console.log("console.log(res.data.data.invoices); E");
@@ -53,7 +55,7 @@ const Home = () => {
   }, [status]);
 
   React.useEffect(() => {
-    setShowInvoices(
+    setShowInvoiceList(
       invoices.filter((invoice: Invoice) => {
         return (
           invoice.recipientName.toUpperCase().includes(searchData.toUpperCase()) ||
@@ -75,7 +77,9 @@ const Home = () => {
 
   if (session) {
     return (
-      // <div className="flex min-h-screen flex-col items-center justify-between p-24">
+      showInvoice ?
+      <InvoiceView closeFunc={()=>setShowInvoice(false)} invoiceId={invoiceId}></InvoiceView>
+        :
       <div className="flex min-h-screen flex-col justify-center space-y-4 px-6 py-12 lg:px-8">
         <div className="dark:invert">
           <CustomInput
@@ -87,20 +91,18 @@ const Home = () => {
           ></CustomInput>
         </div>
         <div>
-          <InvoiceTable invoices={showInvoices}></InvoiceTable>
+          <InvoiceTable invoices={showInvoiceList} setInvoiceId={setInvoiceId} setShowInvoice={setShowInvoice}></InvoiceTable>
         </div>
         <div>
           <CustomButton func={signOutFunc} nameVal="SIGN OUT"></CustomButton>
         </div>
       </div>
+    
     );
   } else {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-between p-24">
-        noho
-      </div>
+      <Loading></Loading>
     );
-    // redirect('/login');
   }
 };
 

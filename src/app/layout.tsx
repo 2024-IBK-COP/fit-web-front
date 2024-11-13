@@ -16,8 +16,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "YOHO",
-  description: "YOHO",
+  title: "IBK CC:ME",
+  description: "IBK CC:ME",
 };
 
 export default function RootLayout({

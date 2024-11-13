@@ -1,15 +1,8 @@
-import React from 'react';
-import Image from "next/image";
-import { usePDF } from 'react-to-pdf';
-import generatePDF from 'react-to-pdf';
-import CustomButton from './CustomButton';
+import React, { RefObject } from 'react';
 
-import { useEffect, useRef, useState } from 'react'
-import html2canvas from 'html2canvas'
-import { jsPDF } from 'jspdf'
 
 interface Props {
-    refUrl?: string;
+    printRef?: RefObject<HTMLElement>;
     invoice: {
         senderName?: string,
         senderAddress?: string,
@@ -36,41 +29,10 @@ export default function Invoice(props: Props) {
     console.log(props);
     console.log("export default function Invoice(props: Props) {export default function Invoice(props: Props) { S");
 
-
-    const printRef = useRef<HTMLElement>(null)
-
-    const handleDownloadPdf = async () => {
-        const element = printRef.current
-        if (!element) {
-            return
-        }
-        const canvas = await html2canvas(element)
-        const componentWidth = element.offsetWidth
-        const componentHeight = element.offsetHeight
-
-        const orientation = componentWidth >= componentHeight ? 'l' : 'p'
-
-        const imgData = canvas.toDataURL('image/png')
-        const pdf = new jsPDF({
-            orientation,
-            unit: 'px',
-        })
-
-        pdf.internal.pageSize.width = componentWidth
-        pdf.internal.pageSize.height = componentHeight
-
-        pdf.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight)
-        pdf.save('대출제안서.pdf')
-    }
-
     return (
 
         <>
-            <div className='absolute-right'><CustomButton nameVal='DOWNLOAD' func={handleDownloadPdf}></CustomButton></div>
-            <div >
-                Content to be included in the PDF
-            </div>
-            <div ref={printRef} className="text-black bg-white max-w-[210mm] min-h-[297mm] mx-auto p-10 shadow-lg">
+            <div ref={props.printRef} className="text-black bg-white max-w-[210mm] min-w-[210mm] min-h-[297mm] max-h-[297mm] mx-auto p-10 shadow-lg">
 
                 <div className="flex justify-between items-center content-center mb-10">
                     <div className="flex flex-col items-center">
