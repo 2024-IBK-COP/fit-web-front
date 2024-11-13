@@ -9,7 +9,7 @@ import FloatButton from "@/app/_components/FloatButton";
 
 
 interface Props {
-    invoiceId ?: String;
+    invoiceId ?: string;
     closeFunc ?: ()=>void;
 }
 

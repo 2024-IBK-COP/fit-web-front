@@ -7,7 +7,7 @@ import InvoiceTable from "./_components/InvoiceTable";
 import CustomInput from "./_components/CustomInput";
 import Loading from "./_components/Loading";
 import axios from "axios";
-import InvoiceView from "./_components/invoiceView";
+import InvoiceView from "./_components/InvoiceView";
 
 interface Invoice {
   invoiceId: string;

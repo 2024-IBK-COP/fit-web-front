@@ -11,16 +11,11 @@ import { jsPDF } from 'jspdf'
 import FloatButton from "@/app/_components/FloatButton";
 import CustomButton from "@/app/_components/CustomButton";
 
-interface Props {
-    invoiceId ?: String;
-    closeFunc ?: ()=>void;
-}
-
-const InvoiceView = (props : Props) => {
+const InvoiceView = () => {
 
     const [invoiceData, setInvoiceData] = React.useState();
     
-    const invoiceId = useSearchParams().get('invoiceId') || props.invoiceId || "";
+    const invoiceId = useSearchParams().get('invoiceId');
 
 
     const printRef = useRef<HTMLElement>(null)
@@ -82,9 +77,6 @@ const InvoiceView = (props : Props) => {
             // <Invoice invoice={invoiceSample}></Invoice>
             // "1203f1e3-80b3-415a-a8af-db08b2f8196f"
             <>            
-            <div className="fixed top-4 right-4 py-3 px-6">
-                <FloatButton func={props.closeFunc} textVal="Close"></FloatButton>
-            </div>
             <div className="fixed bottom-4 right-4 py-3 px-6">
                 <FloatButton func={handleDownloadPdf} textVal="Download"></FloatButton>
             </div>

@@ -2,7 +2,7 @@ import React, { RefObject } from 'react';
 
 
 interface Props {
-    printRef?: RefObject<HTMLElement>;
+    printRef?: any;
     invoice: {
         senderName?: string,
         senderAddress?: string,
