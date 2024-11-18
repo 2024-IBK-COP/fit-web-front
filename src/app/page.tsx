@@ -8,6 +8,7 @@ import CustomInput from "./_components/CustomInput";
 import Loading from "./_components/Loading";
 import axios from "axios";
 import InvoiceView from "./_components/InvoiceView";
+import LogoImg_sm from "./_components/LogoImg_sm";
 
 interface Invoice {
   invoiceId: string;
@@ -37,7 +38,7 @@ const Home = () => {
           Authorization: `Bearer ${session?.accessToken}`,
         },
       })
-      .then((res) => {        
+      .then((res) => {
         if (res.data.code == "00") {
           setInvoices(res.data.data.invoices);
           setShowInvoiceList(res.data.data.invoices);
@@ -58,7 +59,9 @@ const Home = () => {
     setShowInvoiceList(
       invoices.filter((invoice: Invoice) => {
         return (
-          invoice.recipientName.toUpperCase().includes(searchData.toUpperCase()) ||
+          invoice.recipientName
+            .toUpperCase()
+            .includes(searchData.toUpperCase()) ||
           invoice.senderName.toUpperCase().includes(searchData.toUpperCase())
         );
       })
@@ -70,41 +73,60 @@ const Home = () => {
   };
 
   if (status === "loading") {
-    return (
-      <Loading></Loading>
-    );
+    return <Loading></Loading>;
   }
 
   if (session) {
-    return (
-      showInvoice ?
-      <InvoiceView closeFunc={()=>setShowInvoice(false)} invoiceId={invoiceId}></InvoiceView>
-        :
-      <div className="flex min-h-screen flex-col justify-center space-y-4 px-6 py-12 lg:px-8">
-        <div className="dark:invert">
-          <CustomInput
-            setFunc={setSearchData}
-            idVal="search"
-            typeVal="text"
-            nameVal="SEARCH"
-            labelVal="SEARCH"
-          ></CustomInput>
+    return showInvoice ? (
+      <InvoiceView
+        closeFunc={() => setShowInvoice(false)}
+        invoiceId={invoiceId}
+      ></InvoiceView>
+    ) : (
+      <div>
+        <div className="absolute top-5 right-10">
+          <LogoImg_sm></LogoImg_sm>
         </div>
-        <div>
-          <InvoiceTable invoices={showInvoiceList} setInvoiceId={setInvoiceId} setShowInvoice={setShowInvoice}></InvoiceTable>
-        </div>
-        <div>
-          <CustomButton func={signOutFunc} nameVal="SIGN OUT"></CustomButton>
+        <div className="flex min-h-screen flex-col justify-center space-y-4 px-6 py-12 lg:px-8">
+          <div className="flex felx-row w-auto dark:invert">
+            <CustomInput
+              setFunc={setSearchData}
+              idVal="search"
+              typeVal="text"
+              nameVal="DATE"
+              labelVal="DATE"
+            ></CustomInput>
+                        <CustomInput
+              setFunc={setSearchData}
+              idVal="search"
+              typeVal="text"
+              nameVal="SELLER"
+              labelVal="SELLER"
+            ></CustomInput>
+                        <CustomInput
+              setFunc={setSearchData}
+              idVal="search"
+              typeVal="text"
+              nameVal="BUYER"
+              labelVal="BUYER"
+            ></CustomInput>
+          </div>
+          <div>
+            <InvoiceTable
+              invoices={showInvoiceList}
+              setInvoiceId={setInvoiceId}
+              setShowInvoice={setShowInvoice}
+            ></InvoiceTable>
+          </div>
+          <div>
+            <CustomButton func={signOutFunc} nameVal="SIGN OUT"></CustomButton>
+          </div>
         </div>
       </div>
-    
     );
   } else {
-    return (
-      <Loading></Loading>
-    );
+    return <Loading></Loading>;
   }
 };
 
 export default Home;
-

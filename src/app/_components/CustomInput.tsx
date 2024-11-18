@@ -8,7 +8,7 @@ interface Props {
 
 export default function CustomInput(props: Props) {
   return (
-    <div>
+    <div className="basis-full px-0.5">
       <label
         htmlFor={props.idVal}
         className="block text-sm font-medium leading-6 text-gray-900"
