@@ -1,0 +1,39 @@
+{
+    "invoiceDate": "2024-11-24",
+    "dueDate": "2024-11-24",
+    "senderName": "SELLER A Co",
+    "senderAddress": "",
+    "senderContact": "",
+    "recipientName": "BUYER B Co",
+    "recipientAddress": "",
+    "recipientContact": "0000-1111-2222",
+    "items": [
+      {
+        "itemName": "Good Game",
+        "itemDescription": "Good Game Ever",
+        "quantity": 1,
+        "unitPrice": 33,
+        "totalPrice": 33
+      },
+      {
+        "itemName": "FIFA 24",
+        "itemDescription": "Fifa 24",
+        "quantity": 10,
+        "unitPrice": 250,
+        "totalPrice": 2500
+      }
+    ],
+    "subTotal": 2533,
+    "taxRate": 0,
+    "taxAmount": 0,
+    "discount": 0,
+    "totalAmount": 2533,
+    "paymentTerms": "YAHO",
+    "paymentMethod": "YAHO",
+    "bankDetails": "YAHO",
+    "paymentStatus": "YAHO",
+    "notes": "YAHO",
+    "termsAndConditions": "YAHO",
+    "currency": "USD",
+    "referenceNumber": "YAHO"
+  }

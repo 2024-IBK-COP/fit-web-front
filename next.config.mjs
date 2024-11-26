@@ -1,17 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // distDir: 'build',
-    // output: 'export',
-    // reactStrictMode: true,
-    // swcMinify: true,
-    // async rewrites() {
-    //     return [
-    //         {
-    //             source: '/api_server/:path*',
-    //             destination: 'http://34.105.111.197:8080/:path*',
-    //         },
-    //     ];
-    // },
+  webpack: (config) => {
+    config.resolve.alias.canvas = false;
+
+    return config;
+  },
+  reactStrictMode: true,
+  swcMinify: true,
+  async rewrites() {
+    return [
+      {
+        source: "/invoice/:path*",
+        destination: "http://localhost:8000/:path*",
+      },
+    ];
+  },
 };
 
 export default nextConfig;
