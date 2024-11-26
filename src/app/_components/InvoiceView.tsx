@@ -20,7 +20,7 @@ const InvoiceView = (props : Props) => {
 
     const printRef = useRef<HTMLElement>(null)
     
-    const handleDownloadPdf = async () => {
+    const handleDownloadPdf = async (invoiceData:any) => {
         const element = printRef.current
         if (!element) {
             return
@@ -41,7 +41,8 @@ const InvoiceView = (props : Props) => {
         pdf.internal.pageSize.height = componentHeight
 
         pdf.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight)
-        pdf.save('대출제안서.pdf')
+        pdf.save(invoiceData.invoiceDate+'_invoice.pdf')
+        
     }
 
     React.useEffect(() => {
@@ -77,7 +78,7 @@ const InvoiceView = (props : Props) => {
                 <FloatButton func={props.closeFunc} textVal="Close"></FloatButton>
             </div>
             <div className="fixed bottom-4 right-4 py-3 px-6">
-                <FloatButton func={handleDownloadPdf} textVal="Download"></FloatButton>
+                <FloatButton func={()=>{handleDownloadPdf(invoiceData)}} textVal="Download"></FloatButton>
             </div>
                 <Invoice printRef={printRef} invoice={invoiceData}></Invoice>
             </>
