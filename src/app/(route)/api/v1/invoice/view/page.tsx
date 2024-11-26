@@ -41,7 +41,7 @@ const InvoiceView = () => {
         pdf.internal.pageSize.height = componentHeight
 
         pdf.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight)
-        pdf.save('대출제안서.pdf')
+        pdf.save('invoice.pdf')
     }
 
     React.useEffect(() => {
