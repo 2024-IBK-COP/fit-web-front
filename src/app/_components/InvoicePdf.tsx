@@ -13,10 +13,10 @@ interface Props {
 }
 
 function InvoicePdf(props : Props) {
-  const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [numPages, setNumPages] = useState<number>(1);
+  const [pageNumber, setPageNumber] = useState<number>(1);
 
-  function onDocumentLoadSuccess({ numPages } :any) {
+  function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
   }
 

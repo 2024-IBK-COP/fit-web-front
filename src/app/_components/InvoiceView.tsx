@@ -74,6 +74,7 @@ const InvoiceView = (props: Props) => {
         // return res.data;
         console.log("console.log(res);console.log(res);11");
         console.log(res);
+        console.log(res.data.data);
         console.log("console.log(res);console.log(res);11");
         setInvoiceData(res.data.data);
       })
