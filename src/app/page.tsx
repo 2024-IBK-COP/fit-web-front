@@ -22,7 +22,15 @@ interface Invoice {
 const Home = () => {
   const { status, data: session } = useSession();
 
-  const [searchData, setSearchData] = React.useState("");
+  const [searchSellerData, setSearchSellerData] = React.useState("");
+  const [searchBuyerData, setSearchBuyerData] = React.useState("");
+  const [searchDateData, setSearchDateData] = React.useState("");
+  // const [searchData, setSearchData] = React.useState("");
+  const [searchData, setSearchData] = React.useState({
+    date:'',
+    seller:'',
+    buyer:''
+  });
   const [invoices, setInvoices] = React.useState([]);
   const [showInvoiceList, setShowInvoiceList] = React.useState([]);
   const [showInvoice, setShowInvoice] = React.useState(false);
@@ -59,10 +67,9 @@ const Home = () => {
     setShowInvoiceList(
       invoices.filter((invoice: Invoice) => {
         return (
-          invoice.recipientName
-            .toUpperCase()
-            .includes(searchData.toUpperCase()) ||
-          invoice.senderName.toUpperCase().includes(searchData.toUpperCase())
+          invoice.recipientName.toUpperCase().includes(searchData.buyer.toUpperCase()) &&
+          invoice.senderName.toUpperCase().includes(searchData.seller.toUpperCase()) &&
+          invoice.invoiceDate.toUpperCase().includes(searchData.date.toUpperCase())
         );
       })
     );
@@ -90,21 +97,27 @@ const Home = () => {
         <div className="flex min-h-screen flex-col justify-center space-y-4 px-6 py-12 lg:px-8">
           <div className="flex felx-row w-auto dark:invert">
             <CustomInput
-              setFunc={setSearchData}
+              setFunc={(data)=>{
+                setSearchData({...searchData, date:data})
+              }}
               idVal="search"
               typeVal="text"
               nameVal="DATE"
               labelVal="DATE"
             ></CustomInput>
                         <CustomInput
-              setFunc={setSearchData}
+              setFunc={(data)=>{
+                setSearchData({...searchData, seller:data})
+              }}
               idVal="search"
               typeVal="text"
               nameVal="SELLER"
               labelVal="SELLER"
             ></CustomInput>
                         <CustomInput
-              setFunc={setSearchData}
+              setFunc={(data)=>{
+                setSearchData({...searchData, buyer:data})
+              }}
               idVal="search"
               typeVal="text"
               nameVal="BUYER"
