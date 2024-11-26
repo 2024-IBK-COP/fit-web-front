@@ -1,4 +1,5 @@
 import React, { RefObject } from 'react';
+import Image from "next/image";
 
 
 interface Props {
@@ -36,7 +37,7 @@ export default function Invoice(props: Props) {
 
                 <div className="flex justify-between items-center content-center mb-10">
                     <div className="flex flex-col items-center">
-                        {/* <Image
+                        <Image
                             // loader={()=>{return "/img/IBK_CI_LOGO.png"}}
                             // priority={true}
                             width={150}
@@ -44,9 +45,8 @@ export default function Invoice(props: Props) {
                             //className="mx-auto h-50 w-auto"
                             src="/img/COMPANY_LOGO.jpeg"
                             alt="Your Company"
-                        
-                        /> */}
-                        <img src='/img/COMPANY_LOGO.jpeg' width={150}></img>
+                        />
+                        {/* <img src='/img/COMPANY_LOGO.jpeg' width={150}></img> */}
                         <br></br>
                         <h1 className="text-4xl font-bold">Invoice</h1>
                     </div>
