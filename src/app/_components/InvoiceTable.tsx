@@ -65,7 +65,7 @@ export default function InvoiceTable(props: Props) {
                 <td className="px-6 py-4">{invoice.invoiceDate}</td>
                 <td className="px-6 py-4">{invoice.senderName}</td>
                 <td className="px-6 py-4">{invoice.recipientName}</td>
-                <td className="px-6 py-4">{invoice.currency}</td>
+                <td className="px-6 py-4">{(invoice.currency == '$') ? ('USD') : (invoice.currency)}</td>
                 <td className="px-6 py-4">{invoice.totalAmount}</td>
                 <td className="px-6 py-4 text-right">
                   <button
